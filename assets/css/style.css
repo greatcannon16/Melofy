@@ -1,0 +1,320 @@
+:root{
+    /* --primary-color: #5b42fa;
+    --text-color: #333; */
+    --primary-color: #00ff88;  /* Xanh lá Neon rực rỡ */
+    --accent-purple: #7000ff;  /* Tím đậm huyền ảo */
+    --bg-dark: #0a0813;        /* Nền đêm đen pha tím */
+    --card-bg: #1a162b;        /* Nền thẻ bài hát */
+    --text-color: #ffffff;     /* Chữ màu trắng */
+    --text-sub: #a099c0;        /* Chữ phụ màu tím nhạt */
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: inherit;
+}
+
+body{
+    background: var(--bg-dark);
+    color: var(--text-color);
+
+}
+
+html{
+    box-sizing: border-box;
+    font-family: "Poppins",sans-serif;
+}
+
+.player {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.player .icon-pause {
+  display: none;
+}
+
+.player.playing .icon-pause {
+  display: inline-block;
+}
+
+.player.playing .icon-play {
+  display: none;
+}
+
+
+.dashboard{
+    padding: 16px 16px 14px;
+    background-color: #181528;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    max-width: 480px;
+    
+    /* Viền tím mờ + bóng tạo độ nổi, không lo tiệp màu nền */
+    border: 1px solid rgba(112, 0, 255, 0.2);
+    border-bottom: 2px solid rgba(0, 255, 136, 0.3); /* Điểm nhấn xanh lá ở đáy */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    
+    border-radius: 0 0 16px 16px; /* Bo nhẹ 2 góc dưới cho thanh thoát */
+    z-index: 10;
+}
+
+/* HEADER */
+header{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+header h4{
+    color: var(--primary-color);
+    font-style: 14px;
+}
+
+header h2{
+    color: var(--text-color);
+    font-style: 22px;
+}
+
+/* CD */
+.cd{
+    display: flex;
+    margin: auto;
+    width: 200px;
+}
+
+.cd-thumb{
+    width: 100%;
+    object-fit: cover;
+    padding-top: 100%;
+    border-radius: 50%;
+    border-color: #333;
+    background-size: cover;
+    margin: auto;
+}
+
+/* CONTROL */
+.control{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 18px 0 15px 0;
+}
+
+.control .btn:not(.btn-toggle-play){
+    color: #a099c0;
+    padding: 18px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.control .btn:not(.btn-toggle-play):hover {
+    color: var(--primary-color); 
+}
+
+.control .btn.active{
+    color: var(--primary-color);
+
+}
+
+.control .btn-toggle-play{
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    font-size: 29px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(139deg, var(--primary-color), #05a15d);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+    
+}
+
+.control .btn-toggle-play:hover {
+    transform: scale(1.08); /* Phóng nhẹ nút lên khi rê chuột vào */
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.7);
+}
+
+/* Khi lấy tay/chuột bấm giữ vào nút Play */
+.control .btn-toggle-play:active {
+    /* Thu nhỏ nhẹ nút lại */
+    transform: scale(0.95); 
+    /* Bóng thu nhỏ lại đậm hơn */
+    box-shadow: 0 0 10px 1px rgba(0, 255, 136, 0.7); 
+    
+}
+
+
+.control .btn-toggle-play i.active {
+    display: inline-block;
+}
+
+.control .btn-toggle-play:hover i.active {
+    transform: scale(1.15);
+}
+
+.control .btn-toggle-play:active i.active {
+    transform: scale(0.8) rotate(-10deg);
+}
+
+
+.progress{
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #e4e4e4;
+    border-radius: 15px;
+    outline: none;
+    opacity: 0.9;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+
+.progress::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+   background-color: var(--primary-color);
+    box-shadow: 0 0 8px #06a25e;
+    cursor: pointer;
+}
+
+.progress::-webkit-slider-thumb:hover{
+    transform: scale(1.42);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.7);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+
+/* Dành riêng cho Firefox (Buộc phải tách riêng selector) */
+.progress::-moz-range-thumb{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    box-shadow: 0 0 8px var(--primary-color);
+    cursor: pointer;
+    border: none; /* Firefox mặc định hay có cái viền xấu xí nên bỏ đi */
+}
+
+/* VOLUME */
+.volume-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 14px;
+    gap: 10px;
+}
+
+.volume-icon {
+    color: var(--primary-color);
+    font-size: 19px;
+    width: 20px;
+    text-align: center;
+}
+
+.volume {
+    -webkit-appearance: none;
+    width: 50%;
+    height: 4px;
+    background: #ccc;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+}
+
+.volume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.volume::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    border: none;
+}
+
+/* PLAYLIST */
+.playlist{
+    margin-top: 465px;
+    padding: 13px;
+}
+
+.song{
+    display: flex;
+    align-items: center;
+    margin-bottom: 13px;
+    background-color: var(--card-bg);
+    padding: 10px 16px;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    scroll-margin-top: 380px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+
+.song.active{
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+
+}
+
+.song:active{
+    opacity: 0.8;
+    
+}
+
+.song.active .option,
+.song.active .author,
+.song.active .title{
+    color: var(--bg-dark);
+}
+
+.song .thumb{
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background-size: cover;
+    margin: 0 8px;
+}
+
+.song .body{
+    flex: 1px;
+    padding: 0 16px;
+}
+
+.song .title{
+    font-size: 18px;
+    color: var(--text-color);
+}
+
+.song .author{
+    font-size: 13px;
+    color: var(--text-sub);
+}
+
+.song .option{
+    padding: 16px 8px;
+    color: var(--text-color);
+    font-size: 22px;
+}
